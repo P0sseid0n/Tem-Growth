@@ -4,7 +4,7 @@ import chalk from 'chalk'
 async function temGrowth() {
 	console.time('Time')
 	const browser = await puppeteer.launch({
-		headless: 'new',
+		headless: true,
 		timeout: 40_000,
 	})
 
@@ -48,14 +48,14 @@ async function temGrowth() {
 
 			await page.goto(url)
 
-			await page.waitForSelector('.boxFlutuante-btnFinalizar')
+			await page.waitForSelector('.botao-de-compra')
 
 			const isAvailable = await page.evaluate(() => {
-				const buttons = document.querySelectorAll('.boxFlutuante-btnFinalizar')
+				const botaoDeCompraContainer = document.querySelector('.botao-de-compra')
+				const botaoDeCompra = botaoDeCompraContainer?.querySelector('.botaoComprar')
+				const botaoIndisponivel = botaoDeCompraContainer?.querySelector('.indisponivel--button')
 
-				const button = buttons[buttons.length - 1]
-
-				return button?.classList.contains('boxFlutuante-botaoComprar')
+				return botaoDeCompra && !botaoIndisponivel
 			})
 
 			page.close()
